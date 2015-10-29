@@ -462,16 +462,21 @@ Elm.Native.WebGL.make = function(elm) {
 
       newModel.cache = oldModel.cache;
 
+      var sizeUpdate = newModel.w !== oldModel.w || newModel.h !== oldModel.h;
+
       var canvas = newModel.cache.canvas;
 
-      canvas.style.width = oldModel.w + 'px';
-      canvas.style.height = oldModel.h + 'px';
+      canvas.style.width = newModel.w + 'px';
+      canvas.style.height = newModel.h + 'px';
       canvas.style.display = "block";
       canvas.style.position = "absolute";
-      canvas.width = oldModel.w;
-      canvas.height = oldModel.h;
+      canvas.width = newModel.w;
+      canvas.height = newModel.h;
 
       if (newModel.cache.gl) {
+        if (sizeUpdate) {
+          newModel.cache.gl.viewport(0, 0, newModel.w, newModel.h);
+        }
         drawGL(newModel);
       } else {
         div.firstChild.width = newModel.w + 'px';
