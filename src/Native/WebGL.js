@@ -76,7 +76,7 @@ Elm.Native.WebGL.make = function(elm) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
         break;
-    };
+    }
     gl.generateMipmap(gl.TEXTURE_2D);
     //gl.bindTexture(gl.TEXTURE0, null);
     return tex;
@@ -113,32 +113,32 @@ Elm.Native.WebGL.make = function(elm) {
 
     return program;
 
-	}
+  }
 
   function get_render_info(gl, render_type) {
-	switch(render_type) {
-		case 'Triangle': return { mode: gl.TRIANGLES, elemSize: 3 }; 
-		case 'LineStrip' : return { mode: gl.LINE_STRIP, elemSize: 1 };
-		case 'LineLoop' : return { mode: gl.LINE_LOOP, elemSize: 1 };
-		case 'Points' : return { mode: gl.POINTS, elemSize: 1 };
-		case 'Lines': return { mode: gl.LINES, elemSize: 2 }; 
-		case 'TriangleStrip': return { mode: gl.TRIANGLE_STRIP, elemSize: 1 }; 
-		case 'TriangleFan': return { mode: gl.TRIANGLE_FAN, elemSize: 1 }; 
-	}
-  }; 
+    switch(render_type) {
+      case 'Triangle': return { mode: gl.TRIANGLES, elemSize: 3 }; 
+      case 'LineStrip' : return { mode: gl.LINE_STRIP, elemSize: 1 };
+      case 'LineLoop' : return { mode: gl.LINE_LOOP, elemSize: 1 };
+      case 'Points' : return { mode: gl.POINTS, elemSize: 1 };
+      case 'Lines': return { mode: gl.LINES, elemSize: 2 }; 
+      case 'TriangleStrip': return { mode: gl.TRIANGLE_STRIP, elemSize: 1 }; 
+      case 'TriangleFan': return { mode: gl.TRIANGLE_FAN, elemSize: 1 }; 
+    }
+  } 
 
   function get_attribute_info(gl, type) {
-		switch(type) {
-			case gl.FLOAT:      return { size: 1, type: Float32Array, baseType: gl.FLOAT };
-			case gl.FLOAT_VEC2: return { size: 2, type: Float32Array, baseType: gl.FLOAT };
-			case gl.FLOAT_VEC3: return { size: 3, type: Float32Array, baseType: gl.FLOAT };
-			case gl.FLOAT_VEC4: return { size: 4, type: Float32Array, baseType: gl.FLOAT };			
-			case gl.INT: 		return { size: 1, type: Int32Array, baseType: gl.INT };
-			case gl.INT_VEC2: 	return { size: 2, type: Int32Array, baseType: gl.INT };
-			case gl.INT_VEC3: 	return { size: 3, type: Int32Array, baseType: gl.INT };
-			case gl.INT_VEC4: 	return { size: 4, type: Int32Array, baseType: gl.INT };			
-		}
-	  };
+    switch(type) {
+      case gl.FLOAT:      return { size: 1, type: Float32Array, baseType: gl.FLOAT };
+      case gl.FLOAT_VEC2: return { size: 2, type: Float32Array, baseType: gl.FLOAT };
+      case gl.FLOAT_VEC3: return { size: 3, type: Float32Array, baseType: gl.FLOAT };
+      case gl.FLOAT_VEC4: return { size: 4, type: Float32Array, baseType: gl.FLOAT };      
+      case gl.INT:        return { size: 1, type: Int32Array, baseType: gl.INT };
+      case gl.INT_VEC2:   return { size: 2, type: Int32Array, baseType: gl.INT };
+      case gl.INT_VEC3:   return { size: 3, type: Int32Array, baseType: gl.INT };
+      case gl.INT_VEC4:   return { size: 4, type: Int32Array, baseType: gl.INT };      
+    }
+  }
       
   /**
         Form the buffer for a given attribute. 
@@ -152,22 +152,22 @@ Elm.Native.WebGL.make = function(elm) {
   */
   function do_bind_attribute (gl, attribute, bufferElems, elem_length) {      
     var idxKeys = []; 
-    for(var i = 0;i < elem_length;i++) idxKeys.push('_'+i); 
+    for (var i = 0;i < elem_length;i++) idxKeys.push('_'+i); 
 
-    function dataFill(data, cnt, fillOffset, elem, key) {						
-        if(elem_length == 1)
-            for(var i = 0;i < cnt;i++)
-                data[fillOffset++] = cnt === 1 ? elem[key] : elem[key][i];			
+    function dataFill(data, cnt, fillOffset, elem, key) {            
+        if (elem_length === 1)
+            for (var i = 0;i < cnt;i++)
+                data[fillOffset++] = cnt === 1 ? elem[key] : elem[key][i];      
         else
             idxKeys.forEach( function(idx) {
-                for(var i = 0;i < cnt;i++) 
-                    data[fillOffset++] = (cnt === 1 ? elem[idx][key] : elem[idx][key][i]);						
-            }); 		
-    };
+                for (var i = 0;i < cnt;i++) 
+                    data[fillOffset++] = (cnt === 1 ? elem[idx][key] : elem[idx][key][i]);            
+            });     
+    }
 
     var attributeInfo = get_attribute_info(gl, attribute.type); 
 
-    if(attributeInfo === undefined) {
+    if (attributeInfo === undefined) {
         throw error("No info available for: " + attribute.type); 
     }
 
@@ -184,7 +184,7 @@ Elm.Native.WebGL.make = function(elm) {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
     return buffer; 
-  };
+  }
   
   /**
     This sets up the binding cacheing buffers. 
@@ -200,7 +200,7 @@ Elm.Native.WebGL.make = function(elm) {
             ie, 2 for Lines, 3 for Triangles, etc. 
   */
   function do_bind_setup (gl, bufferElems, elem_length) {
-	var buffers = {};
+  var buffers = {};
     
     var numIndices = elem_length * List.length(bufferElems);
     var indices = new Uint16Array(numIndices);
@@ -231,18 +231,19 @@ Elm.Native.WebGL.make = function(elm) {
     LOG("Drawing");
 
     function drawEntity(render) {
-      if(List.length(render.buffer._0) === 0)
+      if (List.length(render.buffer._0) === 0)
           return;
       
       var program;
+      var progid;
       if (render.vert.id && render.frag.id) {
-        var progid = render.vert.id + '#' + render.frag.id;
+        progid = render.vert.id + '#' + render.frag.id;
         program = model.cache.programs[progid];
       }
 
       if (!program) {
 
-        var vshader = undefined;
+        var vshader;
         if (render.vert.id) {
           vshader = model.cache.shaders[render.vert.id];
         } else {
@@ -254,7 +255,7 @@ Elm.Native.WebGL.make = function(elm) {
           model.cache.shaders[render.vert.id] = vshader;
         }
 
-        var fshader = undefined;
+        var fshader;
         if (render.frag.id) {
           fshader = model.cache.shaders[render.frag.id];
         } else {
@@ -267,7 +268,7 @@ Elm.Native.WebGL.make = function(elm) {
         }
 
         program = do_link(gl, vshader, fshader);
-        var progid = render.vert.id + '#' + render.frag.id;
+        progid = render.vert.id + '#' + render.frag.id;
         model.cache.programs[progid] = program;
 
       }
@@ -300,7 +301,7 @@ Elm.Native.WebGL.make = function(elm) {
             break;
           case gl.SAMPLER_2D:
             var texture = render.uniforms[uniform.name];
-            var tex = undefined;
+            var tex;
             if (texture.id) {
               tex = model.cache.textures[texture.id];
             } else {
@@ -321,7 +322,7 @@ Elm.Native.WebGL.make = function(elm) {
             break;
         }
       }
-	  var renderType = get_render_info(gl, render.buffer.ctor); 
+      var renderType = get_render_info(gl, render.buffer.ctor); 
       var buffer = model.cache.buffers[render.buffer.guid];
       
       if (!buffer) {
@@ -341,7 +342,7 @@ Elm.Native.WebGL.make = function(elm) {
         var attribLocation = gl.getAttribLocation(program, attribute.name);
         gl.enableVertexAttribArray(attribLocation);
                 
-        if(buffer.buffers[attribute.name] === undefined) {                 
+        if (buffer.buffers[attribute.name] === undefined) {                 
             buffer.buffers[attribute.name] = do_bind_attribute (gl, attribute, render.buffer._0, renderType.elemSize);
         }
         var attributeBuffer = buffer.buffers[attribute.name];         
@@ -413,13 +414,13 @@ Elm.Native.WebGL.make = function(elm) {
   function stencilOperation(fail, zfail, zpass) {
     return function(gl) {
       gl.stencilOperation(gl[fail], gl[zfail], gl[zpass]);
-    }
+    };
   }
 
   function stencilOperationSeparate(face, fail, zfail, zpass) {
     return function(gl) {
       gl.stencilOperationSeparate(gl[face], gl[fail], gl[zfail], gl[zpass]);
-    }
+    };
   }
 
   function webgl(dimensions, models, functionCalls) {
