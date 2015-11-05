@@ -423,17 +423,33 @@ Elm.Native.WebGL.make = function(elm) {
     };
   }
 
-  function webgl(dimensions, models, functionCalls) {
+  function webgl(contextAttribs, dimensions, models, functionCalls) {
 
     var w = dimensions._0;
     var h = dimensions._1;
+
+    var attribs = {};
+    if (contextAttribs.alpha.ctor === "Just")
+      attribs.alpha = contextAttribs.alpha._0;
+    if (contextAttribs.antialias.ctor === "Just")
+      attribs.antialias = contextAttribs.antialias._0;
+    if (contextAttribs.depth.ctor === "Just")
+      attribs.depth = contextAttribs.depth._0;
+    if (contextAttribs.stencil.ctor === "Just")
+      attribs.stencil = contextAttribs.stencil._0;
+    if (contextAttribs.premultipliedAlpha.ctor === "Just")
+      attribs.premultipliedAlpha = contextAttribs.premultipliedAlpha._0;
+    if (contextAttribs.preserveDrawingBuffer.ctor === "Just")
+      attribs.preserveDrawingBuffer = contextAttribs.preserveDrawingBuffer._0;
+    if (contextAttribs.failIfMajorPerformanceCaveat.ctor === "Just")
+      attribs.failIfMajorPerformanceCaveat = contextAttribs.failIfMajorPerformanceCaveat._0;
 
     function render(model) {
 
       var div = createNode('div');
       div.style.overflow = 'hidden';
       var canvas = createNode('canvas');
-      var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      var gl = canvas.getContext('webgl', attribs) || canvas.getContext('experimental-webgl', attribs);
 
       if (gl) {
         A2(List.map, function(functionCall){
@@ -510,7 +526,7 @@ Elm.Native.WebGL.make = function(elm) {
     textureSize:textureSize,
     loadTexture:F2(loadTexture),
     render:F5(render),
-    webgl:F3(webgl),
+    webgl:F4(webgl),
     enable:enable,
     disable:disable,
     blendColor:F4(blendColor),

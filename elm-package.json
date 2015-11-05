@@ -1,5 +1,5 @@
 {
-    "version": "4.0.2",
+    "version": "1.0.0",
     "summary": "A WebGL library, fork of johnpmayer/elm-webgl",
     "repository": "https://github.com/unknownloner/elm-webgl.git",
     "license": "BSD3",

@@ -148,8 +148,7 @@ defaultConfiguration =
 implicitly configured for you. See `defaultConfiguration` for more information.
 -}
 webgl : (Int,Int) -> List Renderable -> Element
-webgl =
-  webglWithConfig defaultConfiguration
+webgl = webglWithConfig defaultConfiguration
 
 
 {-| Render a WebGL scene with the given dimensions and entities. Shaders and
@@ -157,9 +156,15 @@ meshes are cached so that they do not get resent to the GPU, so it should be
 relatively cheap to create new entities out of existing values.
 -}
 webglWithConfig : List FunctionCall -> (Int,Int) -> List Renderable -> Element
-webglWithConfig functionCalls dimensions entities =
+webglWithConfig = webglWithContextAttribs defaultContextAttributes
+
+{-| Same as webglWithConfig, but allows you to specify attributes
+used when creating the WebGL context
+-}
+webglWithContextAttribs : ContextAttributes -> List FunctionCall -> (Int,Int) -> List Renderable -> Element
+webglWithContextAttribs contextAttribs functionCalls dimensions entities =
   computeAPICalls functionCalls
-  |> Native.WebGL.webgl dimensions entities
+  |> Native.WebGL.webgl contextAttribs dimensions entities
 
 
 {-| -}
@@ -588,3 +593,25 @@ type ZMode
   | Invert
   | IncrementWrap
   | DecrementWrap
+
+
+type alias ContextAttributes =
+  { alpha : Maybe Bool
+  , depth : Maybe Bool
+  , stencil : Maybe Bool
+  , antialias : Maybe Bool
+  , premultipliedAlpha : Maybe Bool
+  , preserveDrawingBuffer : Maybe Bool
+  , failIfMajorPerformanceCaveat : Maybe Bool
+  }
+
+defaultContextAttributes : ContextAttributes
+defaultContextAttributes =
+  { alpha = Just True
+  , depth = Nothing
+  , stencil = Nothing
+  , antialias = Nothing
+  , premultipliedAlpha = Nothing
+  , preserveDrawingBuffer = Nothing
+  , failIfMajorPerformanceCaveat = Nothing
+  }
